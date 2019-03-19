@@ -16,6 +16,7 @@ const {width} = Dimensions.get('window')
 const kWidth = (width / 2) - 4;
 import {extraLightBackground} from '../AsosColors';
 import {Container, Button, Footer, Left, Right,} from 'native-base';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const kHorizontalMargin = 5
 const kVerticalMargin = 10
@@ -44,7 +45,7 @@ class Kitchen extends Component {
         return (
             <Container>
                 <ParallaxScrollView
-                    windowHeight={500 * 0.4}
+                    windowHeight={hp('40%')}
                     backgroundSource={require('../../../assets/Images/detail-food.jpg')}
                     navBarTitle='Zenas Kitchen'
                     userName='Zenas Kitchen'
