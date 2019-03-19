@@ -13,7 +13,7 @@ import Kitchen from "../component/Products/Kitchen";
 
 export default createStackNavigator(
   {
-    Orders: { screen: Orders },
+    // Orders: { screen: Orders },
     Accepted: { screen: Accepted},
     OrdersPlaced: { screen: OrdersPlaced },
     OrderDetailed: { screen: OrderDetailed },

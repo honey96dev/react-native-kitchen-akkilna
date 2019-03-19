@@ -18,6 +18,7 @@ import {
     Right,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const kHorizontalMargin = 20
 
@@ -45,7 +46,7 @@ class Account extends Component {
         return (
             <Container>
                 <ProfileViewParallax
-                    windowHeight={480 * 0.4}
+                    windowHeight={hp('40%')}
                     backgroundSource={require('../../../assets/Images/profile.png')}
                     navBarTitle='Khalid Hashim'
                     userName='Zenas Kitchen'

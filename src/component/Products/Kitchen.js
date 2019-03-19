@@ -1,25 +1,16 @@
 import React, {Component} from 'react';
-import {
-    StyleSheet,
-    View,
-    ScrollView,
-    Dimensions,
-    Image,
-    Text,
-    TouchableHighlight,
-    TouchableOpacity,
-} from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableHighlight, View,} from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scrollview';
-import {ScrollableTabView, collapsableComponent, ScrollableTabBar,} from '@valdio/react-native-scrollable-tabview'
+import {collapsableComponent, ScrollableTabBar, ScrollableTabView,} from '@valdio/react-native-scrollable-tabview'
+import {extraLightBackground} from '../AsosColors';
+import {Button, Container, Footer,} from 'native-base';
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const {width} = Dimensions.get('window')
 const kWidth = (width / 2) - 4;
-import {extraLightBackground} from '../AsosColors';
-import {Container, Button, Footer, Left, Right,} from 'native-base';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const kHorizontalMargin = 5
-const kVerticalMargin = 10
+const kHorizontalMargin = 5;
+const kVerticalMargin = 10;
 
 class Kitchen extends Component {
     static navigationOptions = {
@@ -33,6 +24,9 @@ class Kitchen extends Component {
         this.state = {
             starCount: 3.5
         };
+        // this.parallaxBg = require('../../../assets/Images/detail-food.jpg');
+        this.parallaxBg = require('../../../assets/Images/detail-food.jpg');
+        // console.log('this.parallaxBg', this.parallaxBg);
     }
 
     onStarRatingPress(rating) {
@@ -46,13 +40,13 @@ class Kitchen extends Component {
             <Container>
                 <ParallaxScrollView
                     windowHeight={hp('40%')}
-                    backgroundSource={require('../../../assets/Images/detail-food.jpg')}
+                    backgroundSource={this.parallaxBg}
                     navBarTitle='Zenas Kitchen'
                     userName='Zenas Kitchen'
                     userTitle='Arabic'
                     userImage='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=707b9c33066bf8808c934c8ab394dff6'
                     leftIcon={{name: 'angle-left', color: '#fff', size: 30, type: 'font-awesome'}}
-                    leftIconOnPress={() => this.props.navigation.navigate("Result")}
+                    leftIconOnPress={() => this.props.navigation.navigate("Home")}
                     rightIcon={{name: 'info-circle', color: '#fff', size: 20, type: 'font-awesome'}}
                     rightIconOnPress={() => this.props.navigation.navigate("KitchenProfile")}>
                     <ScrollableTabView
@@ -122,6 +116,7 @@ class Kitchen extends Component {
     createProductItem(item) {
         return (
             <TouchableHighlight
+                key = {item.id}
                 style={{
                     backgroundColor: 'white',
                     borderWidth: 0.5,
@@ -225,7 +220,7 @@ const products = [
         image: require('../../../assets/Images/food2.png',)
     },
     {
-        id: 2,
+        id: 5,
         price: 'AED 60',
         title: 'Spicy Chicken',
         subtitle: 'Indian',
@@ -233,7 +228,7 @@ const products = [
         image: require('../../../assets/Images/food1.png',)
     },
     {
-        id: 0,
+        id: 6,
         price: 'AED 40',
         title: 'Chicken Platter',
         subtitle: 'Indian',
@@ -241,7 +236,7 @@ const products = [
         image: require('../../../assets/Images/food1.png',)
     },
     {
-        id: 1,
+        id: 7,
         price: 'AED 30',
         title: 'Kebab Grills',
         subtitle: 'Arabic',
@@ -249,7 +244,7 @@ const products = [
         image: require('../../../assets/Images/food2.png',)
     },
     {
-        id: 2,
+        id: 8,
         price: 'AED 20',
         title: 'Chicken Tikka',
         subtitle: 'Desserts',
@@ -257,7 +252,7 @@ const products = [
         image: require('../../../assets/Images/food3.png',)
     },
     {
-        id: 3,
+        id: 9,
         price: 'AED 10',
         title: 'Lamb Chops',
         subtitle: 'Sweets',
@@ -265,7 +260,7 @@ const products = [
         image: require('../../../assets/Images/food4.png',)
     },
     {
-        id: 4,
+        id: 10,
         price: 'AED 50',
         title: 'Baby Back Ribs',
         subtitle: 'Beverages',
@@ -273,7 +268,7 @@ const products = [
         image: require('../../../assets/Images/food2.png',)
     },
     {
-        id: 2,
+        id: 11,
         price: 'AED 60',
         title: 'Spicy Chicken',
         subtitle: 'Indian',

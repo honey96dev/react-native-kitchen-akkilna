@@ -1,21 +1,9 @@
 import React, {Component} from "react";
 import {Headers} from "../common";
-import {
-    Container,
-    Content,
-    Button,
-    Text,
-    Thumbnail,
-    ListItem,
-    List,
-    Body,
-    Left,
-    Right
-} from "native-base";
+import {Body, Button, Container, Content, Left, ListItem, Right, Text, Thumbnail} from "native-base";
 import Color from '../AsosColors';
-import {View, StyleSheet, ScrollView, TouchableHighlight, TouchableOpacity, Dimensions} from "react-native";
+import {Dimensions, ScrollView, TouchableOpacity, View} from "react-native";
 import {fetch, GET} from "../../apis";
-import {LOGIN_FAILURE, LOGIN_SUCCESS} from "../../utils";
 import Setting from '../../component/common/Setting';
 
 const {width,} = Dimensions.get('window');
@@ -106,6 +94,7 @@ export default class HomeScreen extends Component {
     createListItem(item) {
         return (
             <TouchableOpacity
+                key = {item.id}
                 style={{
                     backgroundColor: 'white',
                     borderWidth: 0.5,
@@ -123,7 +112,7 @@ export default class HomeScreen extends Component {
                 {/*<Text>item.title</Text>*/}
                 <ListItem
                     thumbnail
-                    key={item.id}
+                    // key={item.id}
                     onPress={() => {
                         this.gotoKitchen();
                     }}>

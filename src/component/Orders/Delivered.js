@@ -72,7 +72,7 @@ onValueChange(value:string) {
         <ScrollView>
         <View
           style={{
-            height: height  ,
+                            // height: height,
             marginBottom: 5,
             marginLeft: 5,
             marginRight: 5,
@@ -129,7 +129,7 @@ onValueChange(value:string) {
           </TouchableOpacity>
          </Container>
                   </CardItem>
-                  <CardItem style={{ height: height - 450 }}>
+                                        <CardItem key={'item3'} >
                     <Content>
                     <List>
                     {cartitems.map((item) => this.createListable(item))} 
