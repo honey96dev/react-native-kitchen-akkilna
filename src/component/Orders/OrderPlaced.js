@@ -1,33 +1,25 @@
 import React, {Component} from "react";
+import {Dimensions, FlatList, Image, Modal, StyleSheet, TouchableHighlight, TouchableOpacity} from "react-native";
+import DatePicker from 'react-native-datepicker'
 import {
-    Dimensions,
-    FlatList,
-    StyleSheet,
-    Image,
-    TouchableHighlight,
-    Modal,
-    DatePickerAndroid,
-    DatePickerIOS
-} from "react-native";
-import {
-    Container,
-    Content,
+    Body,
     Button,
     Card,
     CardItem,
-    Title,
-    Text,
-    Body,
+    Container,
+    Content,
+    Header,
+    Input,
+    Item,
     Left,
-    Right,
-    Toast,
     List,
     ListItem,
-    Item,
-    Input,
-    View,
+    Right,
+    Text,
     Thumbnail,
-    Header,
+    Title,
+    Toast,
+    View,
 } from "native-base";
 
 let {height} = Dimensions.get("window");
@@ -125,12 +117,13 @@ class OrderPlaced extends Component {
                         }}>
                         <View style={{marginTop: 22, padding: 10}}>
                             <View style={{marginTop: 20, marginLeft: 10}}>
-                                <TouchableHighlight
+                                <TouchableOpacity
+                                    activeOpacity={0.5}
                                     onPress={() => {
                                         this.setModalVisible(!this.state.modalVisible);
                                     }}>
                                     <Text>Close</Text>
-                                </TouchableHighlight>
+                                </TouchableOpacity>
                                 <View>
                                     <View style={{
                                         marginTop: 20,
@@ -142,7 +135,7 @@ class OrderPlaced extends Component {
                                             Select Pickup Time for the Delivery
                                         </Text>
                                     </View>
-                                    <DatePickerIOS
+                                    <DatePicker
                                         date={this.state.chosenDate}
                                         onDateChange={this.setDate}
                                     />

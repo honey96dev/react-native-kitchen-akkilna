@@ -19,6 +19,8 @@ import {
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {fetch, GET} from "../../apis";
+import Setting from "../common/Setting";
 
 const kHorizontalMargin = 20
 
@@ -32,7 +34,15 @@ class Account extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            starCount: 3.5
+            starCount: 3.5,
+            account: {
+                navBarTitle: '',
+                userTitle: '',
+                userImage: '',
+                backgroundSource: {},
+                userMobile: '',
+                userName: '',
+            },
         };
     }
 
@@ -42,17 +52,54 @@ class Account extends Component {
         });
     }
 
+    componentDidMount(): void {
+        this.loadData();
+    }
+
+    loadData(): void {
+        fetch(GET, "json.php", {
+            kitchen: Setting.kit_id,
+        }).then(response => {
+            let cnt = response.length;
+            let account = {
+                navBarTitle: '',
+                userTitle: '',
+                userImage: '',
+                backgroundSource: {},
+                userMobile: '',
+                userName: '',
+            }
+            if (cnt > 0) {
+                let data = response[0];
+                account.navBarTitle = data.name;
+                account.userTitle = data.cuisine;
+                account.userImage = data.klogo;
+                account.backgroundSource = {uri: data.cover};
+                account.userMobile = data.phone;
+                account.userName = data.owner_name;
+            }
+            this.setState({
+                account: account
+            })
+            console.log(this.state.account);
+        }).catch(err => {
+
+        });
+    }
+
     render() {
+        const account = this.state.account;
         return (
             <Container>
                 <ProfileViewParallax
                     windowHeight={hp('40%')}
-                    backgroundSource={require('../../../assets/Images/profile.png')}
-                    navBarTitle='Khalid Hashim'
-                    userName='Zenas Kitchen'
-                    userTitle='khalid@akkilna.com'
-                    userMobile='+97152383893'
-                    userImage='https://randomuser.me/api/portraits/men/46.jpg'
+                    // backgroundSource={require(account.backgroundSource)}
+                    backgroundSource={account.backgroundSource}
+                    navBarTitle={account.navBarTitle}
+                    userName={account.userName}
+                    userTitle={account.userTitle}
+                    userMobile={account.userMobile}
+                    userImage={account.userImage}
                     leftIcon={{name: 'angle-left', color: '#fff', size: 30, type: 'font-awesome'}}
 
                 >

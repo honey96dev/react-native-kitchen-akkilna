@@ -23,7 +23,7 @@ export default class HomeScreen extends Component {
         }
     };
 
-    componentWillMount() {
+    componentDidMount(): void {
         this.loadData();
     }
 
@@ -68,7 +68,7 @@ export default class HomeScreen extends Component {
     }
 
     gotoKitchen() {
-        this.props.navigation.navigate('Kitchen');
+        // this.props.navigation.navigate('Kitchen');
     }
 
     render() {
@@ -106,7 +106,7 @@ export default class HomeScreen extends Component {
                     elevation: 3,
                     marginVertical: 10,
                 }}
-                activeOpacity={0.8}
+                activeOpacity={0.5}
                 underlayColor={Color.extraLightBackground}
                 onPress={this.gotoKitchen}>
                 {/*<Text>item.title</Text>*/}

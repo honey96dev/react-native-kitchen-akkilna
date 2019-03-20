@@ -29,8 +29,10 @@
     "android": {
       "package": "com.akkilnakch.com",
       "config": {
-        "googleMaps": { "apiKey": "AIzaSyAjazrqAUy0nWPYVY9-VDqBzG7i_TKzctM" }   
-     },
+        "googleMaps": {
+          "apiKey": "AIzaSyAjazrqAUy0nWPYVY9-VDqBzG7i_TKzctM"
+        }
+      },
       "permissions": [
         "android.permission.CAMERA",
         "android.permission.CAMERA_ROLL",
