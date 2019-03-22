@@ -17,14 +17,20 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0  
+      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "bundleIdentifier": "com.akkilnakch.com",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "splash": {
+        "image": "./assets/splash.png",
+        "tabletImage": "./assets/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff"
+      }
     },
     "android": {
       "package": "com.akkilnakch.com",
@@ -44,7 +50,18 @@
         "android.permission.MANAGED_DOCUMENTS",
         "android.permission.CHANGE_CONFIGURATION",
         "android.permission.ACCESS_NETWORK_STATE"
-      ]
+      ],
+      "splash": {
+        "ldpi": "./assets/splash.png",
+        "mdpi": "./assets/splash.png",
+        "hdpi": "./assets/splash.png",
+        "xhdpi": "./assets/splash.png",
+        "xxhdpi": "./assets/splash.png",
+        "xxxhdpi": "./assets/splash.png",
+        "tabletImage": "./assets/splash.png",
+        "resizeMode": "cover",
+        "backgroundColor": "#ffffff"
+      }
     }
   }
 }
