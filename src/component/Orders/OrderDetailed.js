@@ -19,25 +19,80 @@ import {
     Title,
     View,
 } from "native-base";
+import {fetch, GET} from "../../apis";
+import Setting from "../common/Setting";
 
 let {height} = Dimensions.get("window");
-const cards = [
-    {
-        kitchen: "Zena Kitchen",
-        total: "AED 900",
-        items: "6",
-        logo: require("../../../assets/Images/food1.png")
-    },
-];
 
 class OrderDetailed extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            cards: [],
+            sunTotal: 0,
+            deliveryFees: 0,
+        };
+    }
 
     static navigationOptions = {
         header: {
             visible: false
-        }
-
+        },
     };
+
+    componentDidMount(): void {
+        this.loadData();
+    }
+
+    loadData() {
+        fetch(GET, "json.php", {
+            kit: Setting.kit_id,
+        }).then(response => {
+            let cnt1 = response.length,
+                cnt2;
+            let cards = [],
+                card;
+            let item;
+            let i, j;
+            let subTotal = 0;
+            for (i = 0; i < cnt1; i++) {
+                item = response[i];
+                card = {
+                    orderIndex: i,
+                    orderDate: item.added_date,
+                    orderNo: item.order_id,
+                    expectedDate: item.expected_date + ', ' + item.expected_time,
+                    items: [],
+                    total: 0,
+                    orderStatus: item.order_status,
+                };
+                cnt2 = item.products.length;
+                for (j = 0; j < cnt2; j++) {
+                    try {
+                        card.items.push({
+                            productName: item.products[j].pname,
+                            quantity: item.products[j].quantity,
+                            price: item.products[j].totprice,
+                        });
+                        card.total += parseFloat(item.products[j].totprice);
+                    } catch (e) {
+
+                    }
+                }
+                cards.push(card);
+                subTotal += parseFloat(card.total);
+            }
+            console.log('cards', response);
+            this.setState({
+                cards: cards,
+                subTotal: subTotal,
+                deliveryFees: Number(subTotal * 0.06).toFixed(2),
+            });
+        }).catch(err => {
+
+        });
+    }
 
     render() {
         return (
@@ -99,7 +154,7 @@ class OrderDetailed extends Component {
                         {/* Complete Order */}
 
                         <FlatList
-                            data={cards}
+                            data={this.state.cards}
                             showsVerticalScrollIndicator={false}
                             renderItem={({item}) => (
                                 <Card
@@ -115,7 +170,7 @@ class OrderDetailed extends Component {
                                             <Thumbnail circular large source={item.logo}/>
                                         </Left>
                                         <Body style={{alignItems: "flex-start", paddingTop: 10, marginRight: -50,}}>
-                                        <Text style={styles.listtext}>Kitchen :</Text>
+                                        <Text style={styles.listtext}>ExpectedDate :</Text>
                                         <Text style={styles.listtext}>Items :</Text>
                                         <Text style={styles.listtext}>Total :</Text>
                                         <Text style={styles.listtext}>Payment :</Text>
@@ -125,8 +180,8 @@ class OrderDetailed extends Component {
                                             <Body
                                                 style={{alignItems: "flex-start", paddingTop: 10}}
                                             >
-                                            <Text style={styles.listprice}>{item.kitchen}</Text>
-                                            <Text style={styles.listprice}>{item.items}</Text>
+                                            <Text style={styles.listprice}>{item.expectedDate}</Text>
+                                            <Text style={styles.listprice}>{item.items.length}</Text>
                                             <Text style={styles.listprice}>{item.total}</Text>
                                             <Text style={styles.listprice}>Cash</Text>
                                             <Text style={styles.listprice}>Accepted</Text>
@@ -143,10 +198,12 @@ class OrderDetailed extends Component {
                                         <Right/>
                                     </CardItem>
 
-                                    <CardItem style={{height: height - 290}}>
+                                    <CardItem
+                                        // style={{height: height - 290}}
+                                    >
                                         <Content>
                                             <List>
-                                                {cartitems.map((item) => this.createListable(item))}
+                                                {item.items.map((i) => this.createListable(i))}
                                             </List>
                                         </Content>
                                     </CardItem>
@@ -193,16 +250,16 @@ class OrderDetailed extends Component {
                                     <List>
                                         <ListItem style={{marginTop: 20, flexDirection: 'row'}}>
                                             <Text style={{marginLeft: 5}}>Sub Total</Text>
-                                            <Text style={{marginLeft: 30}}>AED 900.00</Text>
+                                            <Text style={{marginLeft: 30}}>AED {this.state.subTotal}</Text>
                                         </ListItem>
                                         <ListItem style={{marginTop: 20, flexDirection: 'row'}}>
                                             <Text style={{marginLeft: 5}}>Delivery Fees</Text>
-                                            <Text style={{marginLeft: 30}}>AED 50.00</Text>
+                                            <Text style={{marginLeft: 30}}>AED {this.state.deliveryFees}</Text>
                                         </ListItem>
                                         <ListItem style={{marginTop: 20, flexDirection: 'row'}}>
                                             <Text style={{marginLeft: 5, fontFamily: 'Poppins_bold'}}>Total
                                                 Amount</Text>
-                                            <Text style={{marginLeft: 30, fontFamily: 'Poppins_bold'}}>AED 950.00</Text>
+                                            <Text style={{marginLeft: 30, fontFamily: 'Poppins_bold'}}>AED {Number(this.state.subTotal) + Number(this.state.deliveryFees)}</Text>
                                         </ListItem>
                                     </List>
                                 </Content>
@@ -240,7 +297,7 @@ class OrderDetailed extends Component {
             <ListItem style={{marginTop: 10}}>
                 <View style={{flexDirection: 'row'}}>
                     <Left>
-                        <Text style={styles.listtext}>{item.title}</Text>
+                        <Text style={styles.listtext}>{item.productName}</Text>
                         <Text style={styles.listprice}>{item.price}</Text>
                     </Left>
                     <Right>
@@ -253,104 +310,6 @@ class OrderDetailed extends Component {
     }
 }
 
-const cartitems = [
-    {
-        id: 0,
-        price: 'AED 40',
-        title: 'Chicken Platter',
-        subtitle: 'Indian',
-        quantity: '2',
-        image: require('../../../assets/Images/food1.png',)
-    },
-    {
-        id: 1,
-        price: 'AED 30',
-        title: 'Kebab Grills',
-        subtitle: 'Arabic',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 2,
-        price: 'AED 20',
-        title: 'Chicken Tikka',
-        subtitle: 'Desserts',
-        quantity: '1',
-        image: require('../../../assets/Images/food3.png',)
-    },
-    {
-        id: 3,
-        price: 'AED 10',
-        title: 'Lamb Chops',
-        subtitle: 'Sweets',
-        quantity: '2',
-        image: require('../../../assets/Images/food4.png',)
-    },
-    {
-        id: 4,
-        price: 'AED 50',
-        title: 'Baby Back Ribs',
-        subtitle: 'Beverages',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 2,
-        price: 'AED 60',
-        title: 'Spicy Chicken',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-    {
-        id: 0,
-        price: 'AED 40',
-        title: 'Chicken Platter',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-    {
-        id: 1,
-        price: 'AED 30',
-        title: 'Kebab Grills',
-        subtitle: 'Arabic',
-        quantity: '3',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 2,
-        price: 'AED 20',
-        title: 'Chicken Tikka',
-        subtitle: 'Desserts',
-        quantity: '1',
-        image: require('../../../assets/Images/food3.png',)
-    },
-    {
-        id: 3,
-        price: 'AED 10',
-        title: 'Lamb Chops',
-        subtitle: 'Sweets',
-        quantity: '2',
-        image: require('../../../assets/Images/food4.png',)
-    },
-    {
-        id: 4,
-        price: 'AED 50',
-        title: 'Baby Back Ribs',
-        subtitle: 'Beverages',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 2,
-        price: 'AED 60',
-        title: 'Spicy Chicken',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-];
 
 const styles = StyleSheet.create({
     listtext: {

@@ -21,44 +21,88 @@ import {
     Thumbnail
 } from "native-base";
 import StepIndicator from 'react-native-step-indicator';
+import {fetch, GET} from "../../apis";
+import Setting from "../common/Setting";
 
 let {height} = Dimensions.get("window");
-const cards = [
-    {
-        id: 101,
-        date: "21/12/2018",
-        order_no: "30301931",
-        kitchen: "Zena Kitchen",
-        total: "AED 900",
-        items: "6",
-        logo: require("../../../assets/Images/food1.png")
-    },
-    {
-        id: 102,
-        date: "21/12/2018",
-        order_no: "30301931",
-        kitchen: "Zena Kitchen",
-        total: "AED 900",
-        items: "6",
-        logo: require("../../../assets/Images/food1.png")
-    }
-];
+
 export default class Accepted extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            currentPosition: 0,
-            selected: "key1"
+            cards: [],
+            selected: 1,
+            listKey: 12,
         };
     }
 
-    onValueChange(value: string) {
+    onValueChange(orderIndex, orderId, value) {
+        let cards = this.state.cards;
+        cards[orderIndex].orderStatus = value;
         this.setState({
-            selected: value
+            cards: cards,
+            selected: value,
+            listKey: Math.random() * 100,
+        });
+
+        fetch(GET, "json.php", {//kit=5&close=1
+            kit: Setting.kit_id,
+            oid: orderId,
+            ready: value,
         });
     }
 
+
+    componentDidMount(): void {
+        this.loadData();
+    }
+
+    loadData() {
+        fetch(GET, "json.php", {
+            kit: Setting.kit_id,
+            ap: 1,
+        }).then(response => {
+            let cnt1 = response.length,
+                cnt2;
+            let cards = [],
+                card;
+            let item;
+            let i, j;
+            for (i = 0; i < cnt1; i++) {
+                item = response[i];
+                card = {
+                    orderIndex: i,
+                    orderDate: item.added_date,
+                    orderNo: item.order_id,
+                    expectedDate: item.expected_date + ', ' + item.expected_time,
+                    items: [],
+                    total: 0,
+                    orderStatus: item.order_status,
+                };
+                cnt2 = item.products.length;
+                for (j = 0; j < cnt2; j++) {
+                    try {
+                        card.items.push({
+                            productName: item.products[j].pname,
+                            quantity: item.products[j].quantity,
+                            price: item.products[j].totprice,
+                        });
+                        card.total += parseFloat(item.products[j].totprice);
+                    } catch (e) {
+
+                    }
+                }
+                cards.push(card);
+            }
+            console.log('cards', cards);
+            this.setState({
+                cards: cards
+            });
+        }).catch(err => {
+
+        });
+    }
 
     render() {
         return (
@@ -79,6 +123,24 @@ export default class Accepted extends Component {
                     <Right/>
                 </Header>
                 <ScrollView>
+
+                    {/*<Picker*/}
+                        {/*mode="dropdown"*/}
+                        {/*iosHeader="Update Status"*/}
+                        {/*style={{*/}
+                            {/*width: undefined,*/}
+                            {/*backgroundColor: "#EDEDED",*/}
+                            {/*borderWidth: 2,*/}
+                            {/*borderColor: 'green'*/}
+                        {/*}}*/}
+                        {/*selectedValue ={this.state.selected}*/}
+                        {/*// selectedValue ={this.state.selected}*/}
+                        {/*onValueChange={(value)=> this.setState({selected: value})}*/}
+                    {/*>*/}
+                        {/*<Picker.Item label="Accepted" value="1"/>*/}
+                        {/*<Picker.Item label="Preparing" value="2"/>*/}
+                        {/*<Picker.Item label="Ready for Pickup" value="3"/>*/}
+                    {/*</Picker>*/}
                     <View
                         style={{
                             // height: height,
@@ -90,7 +152,8 @@ export default class Accepted extends Component {
 
                         <Content padder>
                             <FlatList
-                                data={cards}
+                                key={this.state.listKey}
+                                data={this.state.cards}
                                 showsVerticalScrollIndicator={false}
                                 renderItem={({item}) => (
                                     <Card
@@ -105,9 +168,9 @@ export default class Accepted extends Component {
                                                 <Thumbnail circular large source={item.logo}/>
                                             </Left>
                                             <Body style={{alignItems: "flex-start", paddingTop: 10, marginRight: -50,}}>
-                                            <Text style={styles.listtext}>Date :</Text>
+                                            <Text style={styles.listtext}>OrderDate :</Text>
                                             <Text style={styles.listtext}>OrderNo :</Text>
-                                            <Text style={styles.listtext}>Kitchen :</Text>
+                                            <Text style={styles.listtext}>ExpectedDate :</Text>
                                             <Text style={styles.listtext}>Items :</Text>
                                             <Text style={styles.listtext}>Total :</Text>
                                             </Body>
@@ -115,10 +178,10 @@ export default class Accepted extends Component {
                                                 <Body
                                                     style={{alignItems: "flex-start", paddingTop: 10}}
                                                 >
-                                                <Text style={styles.listprice}>{item.date}</Text>
-                                                <Text style={styles.listprice}>{item.order_no}</Text>
-                                                <Text style={styles.listprice}>{item.kitchen}</Text>
-                                                <Text style={styles.listprice}>{item.items}</Text>
+                                                <Text style={styles.listprice}>{item.orderDate}</Text>
+                                                <Text style={styles.listprice}>{item.orderNo}</Text>
+                                                <Text style={styles.listprice}>{item.expectedDate}</Text>
+                                                <Text style={styles.listprice}>{item.items.length}</Text>
                                                 <Text style={styles.listprice}>{item.total}</Text>
                                                 </Body>
                                             </Right>
@@ -143,12 +206,13 @@ export default class Accepted extends Component {
                                                                 borderWidth: 2,
                                                                 borderColor: 'green'
                                                             }}
-                                                            selectedValue={this.state.selected}
-                                                            onValueChange={this.onValueChange.bind(this)}
+                                                            selectedValue ={item.orderStatus}
+                                                            // selectedValue ={this.state.selected}
+                                                            onValueChange={(value)=> this.onValueChange(item.orderIndex, item.orderNo, value)}
                                                         >
-                                                            <Picker.Item key={'key0'} label="Accepted" value="key0"/>
-                                                            <Picker.Item key={'key1'} label="Preparing" value="key1"/>
-                                                            <Picker.Item key={'key2'} label="Ready for Pickup" value="key2"/>
+                                                            <Picker.Item label="Accepted" value="1"/>
+                                                            <Picker.Item label="Preparing" value="2"/>
+                                                            <Picker.Item label="Ready for Pickup" value="3"/>
                                                         </Picker>
                                                     </Form>
                                                 </Content>
@@ -159,10 +223,10 @@ export default class Accepted extends Component {
                                                 </TouchableOpacity>
                                             </Container>
                                         </CardItem>
-                                        <CardItem key={'item3'} >
+                                        <CardItem key={'item3'}>
                                             <Content>
                                                 <List>
-                                                    {cartitems.map((item) => this.createListable(item))}
+                                                    {item.items.map((i) => this.createListable(i))}
                                                 </List>
                                             </Content>
                                         </CardItem>
@@ -186,7 +250,7 @@ export default class Accepted extends Component {
                 style={{marginTop: 10}}>
                 <View style={{flexDirection: 'row'}}>
                     <Left>
-                        <Text style={styles.listtext}>{item.title}</Text>
+                        <Text style={styles.listtext}>{item.productName}</Text>
                         <Text style={styles.listprice}>{item.price}</Text>
                     </Left>
                     <Right>
@@ -197,105 +261,6 @@ export default class Accepted extends Component {
         );
     }
 }
-
-const cartitems = [
-    {
-        id: 0,
-        price: 'AED 40',
-        title: 'Chicken Platter',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-    {
-        id: 1,
-        price: 'AED 30',
-        title: 'Kebab Grills',
-        subtitle: 'Arabic',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 2,
-        price: 'AED 20',
-        title: 'Chicken Tikka',
-        subtitle: 'Desserts',
-        quantity: '1',
-        image: require('../../../assets/Images/food3.png',)
-    },
-    {
-        id: 3,
-        price: 'AED 10',
-        title: 'Lamb Chops',
-        subtitle: 'Sweets',
-        quantity: '1',
-        image: require('../../../assets/Images/food4.png',)
-    },
-    {
-        id: 4,
-        price: 'AED 50',
-        title: 'Baby Back Ribs',
-        subtitle: 'Beverages',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 5,
-        price: 'AED 60',
-        title: 'Spicy Chicken',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-    {
-        id: 6,
-        price: 'AED 40',
-        title: 'Chicken Platter',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-    {
-        id: 7,
-        price: 'AED 30',
-        title: 'Kebab Grills',
-        subtitle: 'Arabic',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 8,
-        price: 'AED 20',
-        title: 'Chicken Tikka',
-        subtitle: 'Desserts',
-        quantity: '1',
-        image: require('../../../assets/Images/food3.png',)
-    },
-    {
-        id: 9,
-        price: 'AED 10',
-        title: 'Lamb Chops',
-        subtitle: 'Sweets',
-        quantity: '1',
-        image: require('../../../assets/Images/food4.png',)
-    },
-    {
-        id: 10,
-        price: 'AED 50',
-        title: 'Baby Back Ribs',
-        subtitle: 'Beverages',
-        quantity: '1',
-        image: require('../../../assets/Images/food2.png',)
-    },
-    {
-        id: 11,
-        price: 'AED 60',
-        title: 'Spicy Chicken',
-        subtitle: 'Indian',
-        quantity: '1',
-        image: require('../../../assets/Images/food1.png',)
-    },
-];
 
 const styles = StyleSheet.create({
     listtext: {

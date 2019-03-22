@@ -20,6 +20,8 @@ export const loginUser = ({obj, email, pass}) => {
                     loading: false
                 });
                 const result = response[0];
+                console.log(result);
+                Setting.kit_id = 5;
                 if (result.error == false) {
                     // console.log('success');
                     dispatch({
@@ -28,8 +30,8 @@ export const loginUser = ({obj, email, pass}) => {
                             token: response.token
                         }
                     });
-                    // App.kit_id = result.kit;
                     Setting.kit_id = 5;
+                    // Setting.kit_id = result.kit;
                     obj.props.navigation.navigate("Home");
                 } else {
                     // console.log('fail');
@@ -39,7 +41,7 @@ export const loginUser = ({obj, email, pass}) => {
                             msg: result.error_msg
                         }
                     });
-                    // alert(result.error_msg);
+                    alert(result.error_msg, "Error");
                 }
             })
             .catch(err => {

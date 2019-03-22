@@ -233,12 +233,12 @@ export default class Logins extends Component {
                                         <Button style={styles.primarybtn}
                                                 block
                                                 onPress={() => {
-                                                    // this.props.navigation.navigate("Home");
                                                     this.props.loginUser({
                                                         obj: this,
                                                         email: this.state.email,
                                                         pass: this.state.password
                                                     });
+                                                    // this.props.navigation.navigate("Home");
                                                 }}
                                         >
                                             <Text

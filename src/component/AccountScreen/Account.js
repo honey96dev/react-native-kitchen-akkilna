@@ -38,11 +38,13 @@ class Account extends Component {
             account: {
                 navBarTitle: '',
                 userTitle: '',
-                userImage: '',
-                backgroundSource: {},
+                userImage: '../../../assets/Images/avatar.jpg',
+                backgroundSource: {uri: '../../../assets/Images/background.png'},
                 userMobile: '',
                 userName: '',
+                kitchenStatus: false,
             },
+            closeKitchen: false,
         };
     }
 
@@ -61,22 +63,30 @@ class Account extends Component {
             kitchen: Setting.kit_id,
         }).then(response => {
             let cnt = response.length;
-            let account = {
-                navBarTitle: '',
-                userTitle: '',
-                userImage: '',
-                backgroundSource: {},
-                userMobile: '',
-                userName: '',
-            }
+            let account = this.state.account;
             if (cnt > 0) {
                 let data = response[0];
-                account.navBarTitle = data.name;
-                account.userTitle = data.cuisine;
-                account.userImage = data.klogo;
-                account.backgroundSource = {uri: data.cover};
-                account.userMobile = data.phone;
-                account.userName = data.owner_name;
+                if (data.name != '') {
+                    account.navBarTitle = data.name;
+                }
+                if (data.cuisine != '') {
+                    account.userTitle = data.cuisine;
+                }
+                if (data.klogo != '') {
+                    account.userImage = data.klogo;
+                }
+                if (data.cover != '') {
+                    account.backgroundSource = {uri: data.cover};
+                }
+                if (data.phone != '') {
+                    account.userMobile = data.phone;
+                }
+                if (data.owner_name != '') {
+                    account.userName = data.owner_name;
+                }
+                if (data.kitchen_status != 'Banned') {
+                    account.kitchenStatus = true;
+                }
             }
             this.setState({
                 account: account
@@ -85,6 +95,18 @@ class Account extends Component {
         }).catch(err => {
 
         });
+    }
+
+    closeKitchen(closed): void {
+        this.setState({
+            closeKitchen: closed,
+        });
+        if (closed) {
+            fetch(GET, "json.php", {//kit=5&close=1
+                kit: Setting.kit_id,
+                close: 1,
+            });
+        }
     }
 
     render() {
@@ -100,7 +122,7 @@ class Account extends Component {
                     userTitle={account.userTitle}
                     userMobile={account.userMobile}
                     userImage={account.userImage}
-                    leftIcon={{name: 'angle-left', color: '#fff', size: 30, type: 'font-awesome'}}
+                    // leftIcon={{name: 'angle-left', color: '#fff', size: 30, type: 'font-awesome'}}
 
                 >
                     <ScrollView style={{flex: 1,}}>
@@ -111,15 +133,21 @@ class Account extends Component {
                                         <Text style={styles.listtext}>View Account</Text>
                                     </Left>
                                     <Right>
-                                        <Icon name="chevon-right"/>
+                                        <Icon name="chevron-right" />
                                     </Right>
                                 </ListItem>
-                                <ListItem onPress={() => this.props.navigation.navigate("ChangePassword")}>
+                                <ListItem
+                                    // onPress={() => this.props.navigation.navigate("ChangePassword")}
+                                >
                                     <Left>
                                         <Text style={styles.listtext}>Close Kitchen</Text>
                                     </Left>
                                     <Right>
-                                        <Switch enabled/>
+                                        <Switch
+                                            enabled
+                                            value={this.state.closeKitchen}
+                                            onValueChange={(value) => this.closeKitchen(value)}
+                                        />
                                     </Right>
                                 </ListItem>
                                 <ListItem onPress={() => this.props.navigation.navigate("Earnings")}>
@@ -127,7 +155,7 @@ class Account extends Component {
                                         <Text style={styles.listtext}>Earnings</Text>
                                     </Left>
                                     <Right>
-                                        <Icon name="chevon-right"/>
+                                        <Icon name="chevron-right" />
                                     </Right>
                                 </ListItem>
                                 <ListItem onPress={() => this.props.navigation.navigate("ManageAddress")}>
@@ -135,7 +163,7 @@ class Account extends Component {
                                         <Text style={styles.listtext}>Address</Text>
                                     </Left>
                                     <Right>
-                                        <Icon name="chevon-right"/>
+                                        <Icon name="chevron-right" />
                                     </Right>
                                 </ListItem>
                                 <ListItem onPress={() => this.props.navigation.navigate("ChangePassword")}>
@@ -143,7 +171,7 @@ class Account extends Component {
                                         <Text style={styles.listtext}>Change Password</Text>
                                     </Left>
                                     <Right>
-                                        <Icon name="chevon-right"/>
+                                        <Icon name="chevron-right" />
                                     </Right>
                                 </ListItem>
                                 <ListItem onPress={() => this.props.navigation.navigate("Message")}>
@@ -151,7 +179,7 @@ class Account extends Component {
                                         <Text style={styles.listtext}>Message</Text>
                                     </Left>
                                     <Right>
-                                        <Icon name="chevon-right"/>
+                                        <Icon name="chevron-right" />
                                     </Right>
                                 </ListItem>
                                 <ListItem onPress={() => this.props.navigation.navigate("Reviews")}>
@@ -159,7 +187,7 @@ class Account extends Component {
                                         <Text style={styles.listtext}>Reviews</Text>
                                     </Left>
                                     <Right>
-                                        <Icon name="chevon-right"/>
+                                        <Icon name="chevron-right" />
                                     </Right>
                                 </ListItem>
                             </List>
