@@ -168,12 +168,8 @@ export default class Logins extends Component {
                     <Content padder>
                         <Card transparent>
                             <CardItem style={{borderColor: '#fff',}}>
-                                <Content contentContainerStyle={{}}>
-                                    <CardItem style={{borderColor: '#fff',}}>
-                                        <Text style={{fontSize: 40, fontFamily: 'Poppins_bold', color: '#000',}}>Sign
-                                            In</Text>
-                                    </CardItem>
-                                </Content>
+                                <Text style={{fontSize: 40, fontFamily: 'Poppins_bold', color: '#000',}}>Sign
+                                    In</Text>
                             </CardItem>
                             <Form>
                                 <CardItem>
@@ -194,7 +190,7 @@ export default class Logins extends Component {
                                 </CardItem>
                                 <CardItem>
                                     <Body>
-                                    <Item floatingLabel style={{paddingBottom: 20,}}>
+                                    <Item floatingLabel style={{marginBottom: 30,}}>
                                         <Label>Password</Label>
                                         <Input
                                             secureTextEntry={true}

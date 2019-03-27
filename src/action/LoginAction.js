@@ -1,6 +1,7 @@
 import {LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE} from "../utils";
 import {fetch, GET, POST} from "../apis";
 import Setting from '../component/common/Setting';
+import {Toast} from "native-base";
 
 
 export const loginUser = ({obj, email, pass}) => {
@@ -30,8 +31,8 @@ export const loginUser = ({obj, email, pass}) => {
                             token: response.token
                         }
                     });
-                    Setting.kit_id = 5;
-                    // Setting.kit_id = result.kit;
+                    // Setting.kit_id = 5;
+                    Setting.kit_id = result.kit;
                     obj.props.navigation.navigate("Home");
                 } else {
                     // console.log('fail');
@@ -41,7 +42,13 @@ export const loginUser = ({obj, email, pass}) => {
                             msg: result.error_msg
                         }
                     });
-                    alert(result.error_msg, "Error");
+                    Toast.show({
+                        text: "Please input valid credentials!!!",
+                        textStyle: {textAlign: "center"},
+                        type: "danger",
+                        duration: 3000
+                    });
+                    // alert(result.error_msg, "Error");
                 }
             })
             .catch(err => {

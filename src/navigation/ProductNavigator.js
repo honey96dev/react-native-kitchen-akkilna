@@ -1,8 +1,8 @@
 import { createStackNavigator } from "react-navigation";
 
 import Kitchen from "../component/Products/Kitchen";
-import EditAddress from "../component/Products/EditAddress";
-import ManageAddress from "../component/Products/ManageAddress";
+import EditAddress from "../component/AccountScreen/EditAddress";
+import ManageAddress from "../component/AccountScreen/ManageAddress";
 
 
 export default createStackNavigator(
