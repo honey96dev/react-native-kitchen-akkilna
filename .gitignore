@@ -38,6 +38,7 @@ jspm_packages/
 .expo/
 .idea/
 .svn/
+req/
 
 # TypeScript v1 declaration files
 typings/

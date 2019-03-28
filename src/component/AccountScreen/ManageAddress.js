@@ -67,10 +67,10 @@ class ManageAddress extends Component {
                     area: data.area,
                     street: data.street,
                     building: data.building,
-                    aptNo: data.apt_no,
+                    aptNo: data.villa,
                     landmarks: data.landmarks,
-                    mobile: data.mobile,
-                    contact: data.contact,
+                    mobile: data.owner_contact,
+                    contact: data.phone,
                 })
             }
             console.log(this.state.account);

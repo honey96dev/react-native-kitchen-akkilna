@@ -71,10 +71,10 @@ export default class EditAddress extends Component {
                     area: data.area,
                     street: data.street,
                     building: data.building,
-                    aptNo: data.apt_no,
+                    aptNo: data.villa,
                     landmarks: data.landmarks,
-                    mobile: data.mobile,
-                    contact: data.contact,
+                    mobile: data.owner_contact,
+                    contact: data.phone,
                 })
             }
             console.log(this.state.account);
@@ -94,10 +94,10 @@ export default class EditAddress extends Component {
             area: this.state.area,
             street: this.state.street,
             building: this.state.building,
-            Apt_no: this.state.aptNo,
+            villa: this.state.aptNo,
             landmarks: this.state.landmarks,
-            mobile: this.state.mobile,
-            contact: this.state.contact,
+            owner_contact: this.state.mobile,
+            phone: this.state.contact,
         }).then(response => {
             self.setState({loading: false});
             const result = response[0];
