@@ -24,7 +24,7 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.akkilnakch.com",
+      "bundleIdentifier": "com.akkilna.com",
       "supportsTablet": true,
       "splash": {
         "image": "./assets/splash.png",
@@ -34,7 +34,7 @@
       }
     },
     "android": {
-      "package": "com.akkilnakch.com",
+      "package": "com.akkilna.com",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAjazrqAUy0nWPYVY9-VDqBzG7i_TKzctM"
