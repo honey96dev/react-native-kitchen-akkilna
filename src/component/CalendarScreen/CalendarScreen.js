@@ -89,7 +89,7 @@ class CalendarScreen extends Component {
             this.setState({
                 items: newItems
             });
-            // console.log(newItems);
+            console.log(newItems);
         }, 1000);
         // console.log(`Load Items for ${day.year}-${day.month}`);
     }

@@ -57,7 +57,7 @@ class OrderPlaced extends Component {
     }
 
     acceptButton() {
-        this.props.navigation.navigate("Orders");
+        this.props.navigation.navigate("OrdersStack");
         Toast.show({
             text: "Order Accepted!",
             type: "success",
@@ -85,7 +85,7 @@ class OrderPlaced extends Component {
                     <Left>
                         <Button
                             transparent
-                            onPress={() => this.props.navigation.navigate("Orders")}
+                            onPress={() => this.props.navigation.navigate("OrdersStack")}
                         >
                             <Image source={require('../../../assets/Images/back.png')}
                                    style={{height: 20, width: 20, resizeMode: 'contain'}}/>

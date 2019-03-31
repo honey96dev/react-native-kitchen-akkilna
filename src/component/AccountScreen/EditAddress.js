@@ -88,13 +88,14 @@ export default class EditAddress extends Component {
     updateData() {
         this.setState({loading: true});
         const self = this;
-        fetch(POST, "json_update.php", {
+        fetch(GET, "json_update.php", {
             kit: Setting.kit_id,
             address: this.state.address,
             area: this.state.area,
+            city: '',
             street: this.state.street,
             building: this.state.building,
-            villa: this.state.aptNo,
+            Apt_no: this.state.aptNo,
             landmarks: this.state.landmarks,
             owner_contact: this.state.mobile,
             phone: this.state.contact,
@@ -102,25 +103,25 @@ export default class EditAddress extends Component {
             self.setState({loading: false});
             const result = response[0];
             console.log(result);
-            // if (result.Status == 'Success') {
-            //     self.setState({loading: false});
-            //     Toast.show({
-            //         text: result.Msg,
-            //         textStyle: {textAlign: "center"},
-            //         type: "success",
-            //         duration: 3000
-            //     });
-            //     this.props.navigation.navigate("Account");
-            // } else {
-            //     self.setState({loading: false});
-            //     Toast.show({
-            //         text: result.Msg,
-            //         textStyle: {textAlign: "center"},
-            //         type: "danger",
-            //         duration: 3000
-            //     });
-            //     // alert(result.error_msg, "Error");
-            // }
+            if (result.error == false) {
+                self.setState({loading: false});
+                Toast.show({
+                    text: 'Success!',
+                    textStyle: {textAlign: "center"},
+                    type: "success",
+                    duration: 3000
+                });
+                this.props.navigation.navigate("Account");
+            } else {
+                self.setState({loading: false});
+                Toast.show({
+                    text: response.user[0].error_msg,
+                    textStyle: {textAlign: "center"},
+                    type: "danger",
+                    duration: 3000
+                });
+                // alert(result.error_msg, "Error");
+            }
         }).catch(err => {
             console.log(err);
             self.setState({loading: false});

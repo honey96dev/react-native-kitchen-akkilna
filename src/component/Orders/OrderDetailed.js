@@ -102,7 +102,7 @@ class OrderDetailed extends Component {
                     <Left>
                         <Button
                             transparent
-                            onPress={() => this.props.navigation.navigate("Orders")}
+                            onPress={() => this.props.navigation.navigate("OrdersStack")}
                         >
                             <Image source={require('../../../assets/Images/back.png')}
                                    style={{height: 20, width: 20, resizeMode: 'contain'}}/>

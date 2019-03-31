@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation";
+import {createStackNavigator} from "react-navigation";
 
 import Orders from "../component/Orders/Orders";
 import Accepted from "../component/Orders/Accepted";
@@ -12,21 +12,21 @@ import Message from "../component/Orders/Message";
 import Kitchen from "../component/Products/Kitchen";
 
 export default createStackNavigator(
-  {
-    Orders: { screen: Orders },
-    Accepted: { screen: Accepted},
-    OrdersPlaced: { screen: OrdersPlaced },
-    OrderDetailed: { screen: OrderDetailed },
-    Rejected: { screen: Rejected },
-    Delivered: { screen: Delivered},
-    Cancelled: { screen: Cancelled},
-    Disputed: { screen: Disputed},
-    Message: {screen: Message},
-    Kitchen: { screen: Kitchen },
+    {
+        // Orders: { screen: Orders },
+        Accepted: {screen: Accepted},
+        OrdersPlaced: {screen: OrdersPlaced},
+        OrderDetailed: {screen: OrderDetailed},
+        Rejected: {screen: Rejected},
+        Delivered: {screen: Delivered},
+        Cancelled: {screen: Cancelled},
+        Disputed: {screen: Disputed},
+        Message: {screen: Message},
+        Kitchen: {screen: Kitchen},
 
 
-  },
-  {
-    headerMode: "none"
-  }
+    },
+    {
+        headerMode: "none"
+    }
 );
