@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Kitchen-App-Akkilna",
+    "name": "Kitchen App Akkilna",
     "slug": "Kitchen-App-Akkilna",
     "privacy": "public",
     "sdkVersion": "32.0.0",
@@ -23,7 +23,7 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.akkilna.com",
+      "bundleIdentifier": "com.akkilnakch.com",
       "supportsTablet": true,
       "splash": {
         "image": "./assets/splash.png",
@@ -33,7 +33,7 @@
       }
     },
     "android": {
-      "package": "com.akkilna.com",
+      "package": "com.akkilnakch.com",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyAjazrqAUy0nWPYVY9-VDqBzG7i_TKzctM"

@@ -26,10 +26,10 @@ export default class Logins extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // email: "",
-            // password: "",
-            email: "developer@bezingo.com",
-            password: "123456",
+            email: "",
+            password: "",
+            //email: "developer@bezingo.com",
+            //password: "123456",
             modalVisible: false,
             checkToken: false,
             loading: false,

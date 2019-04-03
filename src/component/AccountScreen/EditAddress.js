@@ -18,7 +18,7 @@ import {
     Label, Toast,
     Spinner
 } from "native-base";
-import {MapView} from "expo";
+// import {MapView} from "expo";
 import {fetch, GET, POST} from "../../apis";
 import Setting from "../common/Setting";
 
