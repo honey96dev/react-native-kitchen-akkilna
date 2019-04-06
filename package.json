@@ -9,6 +9,7 @@
   "dependencies": {
     "@valdio/react-native-scrollable-tabview": "^0.8.11",
     "axios": "^0.18.0",
+    "create-react-context": "^0.2.3",
     "ex-react-native-i18n": "0.0.5",
     "expo": "^32.0.0",
     "expo-google-sign-in": "^4.0.0",
